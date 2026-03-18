@@ -1,0 +1,15 @@
+services:
+  app:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules  # Prevents host's node_modules from overwriting container's
+      - ./src/logs:/usr/src/app/logs  # Using relative path to src/logs directory
+    environment:
+      - NODE_ENV=development
+    command: bun start
