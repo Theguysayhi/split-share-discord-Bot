@@ -1,9 +1,9 @@
 import { DiscordBot } from "./classes/discordBot";
 
-export const translationBot = new DiscordBot({
+export const splitcordBot = new DiscordBot({
     botToken: process.env.DISCORD_TOKEN,
     commandsDirectory: './commands',
     eventsDirectory: './events',
   });
 
-translationBot.logon();
+splitcordBot.logon();

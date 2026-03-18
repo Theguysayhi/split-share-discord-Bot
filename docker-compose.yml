@@ -10,6 +10,33 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules  # Prevents host's node_modules from overwriting container's
       - ./src/logs:/usr/src/app/logs  # Using relative path to src/logs directory
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
+      # Override DATABASE_URL to use the internal Docker service name instead of localhost
+      - DATABASE_URL=postgres://splitshare:splitshare@postgres:5432/splitshare
+    depends_on:
+      postgres:
+        condition: service_healthy
     command: bun start
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: splitshare
+      POSTGRES_PASSWORD: splitshare
+      POSTGRES_DB: splitshare
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U splitshare -d splitshare']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

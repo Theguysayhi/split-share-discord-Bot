@@ -1,9 +1,8 @@
-import logger from "@/logger";
-import { Command } from "@/types/command";
 import {
   MessageFlags,
   SlashCommandBuilder,
 } from "discord.js";
+import type { Command } from "../types/command";
 
 export default {
   data: new SlashCommandBuilder()
@@ -15,11 +14,5 @@ export default {
       content: "Yes yes! I'm on the case!",
       flags: MessageFlags.Ephemeral,
     });
-
-    logger.info({
-      message: `ping called.`,
-      user: interaction.member?.user.username,
-    });
-
   },
 } as Command;
